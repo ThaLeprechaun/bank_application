@@ -1,8 +1,8 @@
 {
-  "name": "decarides-service",
+  "name": "bank_application",
   "version": "1.0.0",
   "main": "bin/www",
-  "author": "Bond <lovedammy77@yahoo.com>",
+  "author": "Akinbiyi Usman",
   "license": "MIT",
   "private": true,
   "scripts": {
