@@ -1,31 +1,33 @@
 #!/usr/bin/env node
 
-/**
- * Read environment variables
- */
 require('dotenv').config();
-
-/**
- * Believe it or not, reading process.env is expensive in NODE.js
- * https://github.com/nodejs/node/issues/3104
- * We want to cache process.env to a regular object since we don't expect it to change at runtime anyway.
- */
-process.env = JSON.parse(JSON.stringify(process.env));
 
 /**
  * Module dependencies.
  */
 
 const app = require('../dist/app').default;
-const debug = require('debug')('nert:server');
+const debug = require('debug')('bank_application:server');
 const http = require('http');
-
+const mongoose = require('mongoose');
 /**
  * Get port from environment and store in Express.
  */
 
 const port = normalizePort(process.env.PORT || '3005');
 app.set('port', port);
+
+/**Connect to MongoDB */
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
+
+mongoose.connection.on('connected', mongoConnected);
+mongoose.connection.on('disconnected', mongoDisconnected);
+mongoose.connection.on('error', mongoError);
 
 /**
  * Create HTTP server.
@@ -70,7 +72,9 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  const bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -93,6 +97,20 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  const bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
   debug('Listening on ' + bind);
+}
+
+function mongoConnected() {
+  debug('MongoDB connected successfully');
+}
+
+function mongoDisconnected(reason) {
+  debug('MongoDB disconnected - %o', reason);
+}
+
+function mongoError(err) {
+  console.error('Mongo Error', err);
 }
