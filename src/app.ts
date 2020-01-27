@@ -4,7 +4,7 @@ import path from 'path';
 import logger from 'morgan';
 import graphqlHTTP from 'express-graphql';
 
-import indexRouter from './routes/index';
+import indexRouter from './routes/user';
 
 import schema from './schema';
 
