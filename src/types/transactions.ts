@@ -31,6 +31,10 @@ const transactionType = new GraphQLObjectType({
       type: GraphQLInt,
       description: 'The amount credited or debited from the account',
     },
+    transactionPin: {
+      type: GraphQLString,
+      description: 'The pin used to complete a transaction',
+    },
     description: {
       type: GraphQLString,
       description: 'The transaction description',
