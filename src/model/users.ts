@@ -7,6 +7,7 @@ export interface IUserSchema extends mongoose.Document {
   bvn: string;
   email: string;
   password: string;
+  transactionPin: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
@@ -53,6 +54,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 6,
+    },
+    transactionPin: {
+      type: String,
+      required: true,
+      minlength: 4,
+      maxlength: 4,
     },
     deletedAt: {
       type: Date,

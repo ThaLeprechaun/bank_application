@@ -22,9 +22,12 @@ export async function getAccountNumber(userId: string) {
 
 //Function to create an account for a user
 export async function createAccount(userId: string) {
+  const accNumber = Number(
+    `2${Math.trunc(Math.random() * 1000000000)}`,
+  ).toString();
   const newAccount = {
     user: userId,
-    accountNumber: Number(`2${Math.trunc(Math.random() * 1000000000)}`),
+    accountNumber: accNumber,
     accountBalance: 0,
   };
 
@@ -41,22 +44,22 @@ export async function createAccount(userId: string) {
 
 //Function to credit a user account
 export async function creditAccount(accountNumber: string, amount: string) {
-  const newAccountNumber = Number(accountNumber);
+  const newAccountNumber = accountNumber;
   const newAmount = Number(amount);
 
-  if (Number.isNaN(newAccountNumber) || Number.isNaN(newAmount)) {
-    throw Error('Invalid account number or amount');
+  if (Number.isNaN(newAmount)) {
+    throw Error('Invalid amount');
   }
 
   try {
-    const [account] = await Accounts.find({ accountNumber: newAccountNumber });
+    const account = await Accounts.findOne({ accountNumber: newAccountNumber });
 
     if (!account) {
       throw Error('Account does not exist');
     }
 
     const updatedAccount = await Accounts.findByIdAndUpdate(
-      { id: account._id },
+      { _id: account._id },
       {
         accountBalance: account.accountBalance + newAmount,
       },
@@ -70,16 +73,15 @@ export async function creditAccount(accountNumber: string, amount: string) {
 
 //Function to debit a user's account
 export async function debitAccount(accountNumber: string, amount: string) {
-  const newAccountNumber = Number(accountNumber);
+  const newAccountNumber = accountNumber;
   const newAmount = Number(amount);
 
-  if (Number.isNaN(newAccountNumber) || Number.isNaN(newAmount)) {
-    throw Error('Invalid account number or amount');
+  if (Number.isNaN(newAmount)) {
+    throw Error('Invalid amount');
   }
 
   try {
-    const [account] = await Accounts.find({ accountNumber: newAccountNumber });
-
+    const account = await Accounts.findOne({ accountNumber: newAccountNumber });
     if (!account) {
       throw Error('Account does not exist');
     }
@@ -88,14 +90,16 @@ export async function debitAccount(accountNumber: string, amount: string) {
       throw Error('Insufficient Funds');
     }
 
-    const updatedAccount = await Accounts.findByIdAndUpdate(
-      { id: account._id },
+    await Accounts.findByIdAndUpdate(
+      { _id: account._id },
       {
         accountBalance: account.accountBalance - newAmount,
       },
     );
-
-    return updatedAccount;
+    const newAccount = await Accounts.findOne({
+      accountNumber: newAccountNumber,
+    });
+    return newAccount;
   } catch (err) {
     throw Error(err.message);
   }

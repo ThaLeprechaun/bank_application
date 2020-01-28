@@ -14,8 +14,13 @@ const transactionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'users',
   },
-  benefactor: {
+  benefactorAccountNumber: {
     type: String,
+    required: true,
+  },
+  benefactorAccountName: {
+    type: String,
+    required: false,
   },
   transactionType: {
     type: String,
@@ -23,6 +28,10 @@ const transactionSchema = new mongoose.Schema({
   },
   transactionAmount: {
     type: Number,
+    required: true,
+  },
+  transactionPin: {
+    type: String,
     required: true,
   },
   description: {

@@ -37,7 +37,7 @@ router.get('/:userId', (req, res) => {
 
   getAUser(userId)
     .then(data => {
-      if (!data) {
+      if (!data || data.deletedAt !== null) {
         res.status(404).json({ message: 'User not found' });
         return;
       }
@@ -97,6 +97,11 @@ router.post('/', async (req, res) => {
       .min(6)
       .max(50)
       .lowercase()
+      .required(),
+    transactionPin: joi
+      .string()
+      .min(4)
+      .max(4)
       .required(),
   });
   const { error, value } = schema.validate(req.body, {
