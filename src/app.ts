@@ -2,15 +2,15 @@ import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 import logger from 'morgan';
-import graphqlHTTP from 'express-graphql';
 
-import indexRouter from './routes/user';
-
-import schema from './schema';
+import userRouter from './routes/user';
+import authRouter from './routes/auth';
+import transactionsRouter from './routes/transactions';
 
 const app = express();
 
 // view engine setup
+app.engine('pug', require('pug').__express);
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
 
@@ -19,15 +19,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.use('/', indexRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/transactions', transactionsRouter);
 
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    graphiql: true,
-  }),
-);
+// app.use(
+//   '/graphql',
+//   graphqlHTTP({
+//     schema,
+//     graphiql: true,
+//   }),
+// );
 
 // catch 404 and forward to error handler
 app.use(function(_req, _res, next) {
