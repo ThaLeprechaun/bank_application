@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 export interface iAccountSchema extends mongoose.Document {
   user: string;
-  accountNumber: number;
+  accountNumber: string;
   accountBalance: number;
   createdAt: Date;
   updatedAt: Date;
@@ -16,7 +16,7 @@ const accountSchema = new mongoose.Schema(
       ref: 'users',
     },
     accountNumber: {
-      type: Number,
+      type: String,
       unique: true,
     },
     accountBalance: {
