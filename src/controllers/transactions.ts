@@ -2,9 +2,11 @@ import Transactions from '../model/transactions';
 
 export interface ITransaction {
   user: string;
-  benefactor: string;
+  benefactorAccountNumber: string;
+  benefactorAccountName?: string;
   transactionType: string;
   transactionAmount: number;
+  transactionPin: string;
   description?: string;
 }
 
