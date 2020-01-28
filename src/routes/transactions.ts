@@ -6,6 +6,12 @@ import {
   viewTransactionsByUser,
 } from '../controllers/transactions';
 import { ITransaction } from '../controllers/transactions';
+import {
+  debitAccount,
+  creditAccount,
+  getAccountNumber,
+} from '../controllers/accounts';
+import { getAUser } from '../controllers/user';
 
 const router = Router();
 
@@ -32,6 +38,8 @@ router.get('/', async (_req, res) => {
 
 // add transaction
 router.post('/:userId', async (req, res) => {
+  let debit: any = {};
+  console.log(req.params, 'params');
   const user = req.params.userId;
   if (!user) {
     res.status(400).json({ msg: 'Unable to add' });
@@ -40,18 +48,35 @@ router.post('/:userId', async (req, res) => {
   }
   try {
     const {
-      benefactor,
+      benefactorAccountNumber,
       transactionType,
       transactionAmount,
+      transactionPin,
       description,
     } = req.body;
     const body: ITransaction = {
       user,
-      benefactor,
+      benefactorAccountNumber,
       transactionType,
       transactionAmount,
+      transactionPin,
       description,
     };
+    try {
+      const userTransPin = body.transactionPin;
+      const userInfo = await getAUser(user);
+      if (userTransPin !== userInfo!.transactionPin) {
+        throw Error('Invalid transaction Pin');
+      }
+      const userAccount: any = await getAccountNumber(user);
+      debit = await debitAccount(userAccount.accountNumber, transactionAmount);
+
+      await creditAccount(benefactorAccountNumber, transactionAmount);
+    } catch (err) {
+      res.status(500).json({ err: err.message });
+
+      return;
+    }
     const doc = await addTransaction(body);
 
     if (!doc) {
@@ -60,7 +85,7 @@ router.post('/:userId', async (req, res) => {
       return;
     }
 
-    res.status(201).json({ doc });
+    res.status(201).json({ doc, accountBalance: debit.accountBalance });
 
     return;
   } catch (err) {
