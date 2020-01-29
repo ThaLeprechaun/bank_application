@@ -95,8 +95,6 @@ const UserState = props => {
     }
   };
 
-  console.log(state, 'second');
-
   return (
     <UserContext.Provider
       value={{

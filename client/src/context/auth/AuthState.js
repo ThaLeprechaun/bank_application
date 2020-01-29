@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 import setAuthToken from '../../utils/setAuthToken';
-import axios from 'axios';
+import request from '../../request';
 
 import {
   LOGIN_SUCCESS,
@@ -33,7 +33,7 @@ const AuthState = props => {
     }
 
     try {
-      const res = await axios.get('/api/auth');
+      const res = await request.get('auth');
       console.log(res);
       dispatch({ type: USER_LOADED, payload: res.data });
     } catch (err) {
@@ -50,7 +50,7 @@ const AuthState = props => {
     };
 
     try {
-      const res = await axios.post('/api/users', formData, config);
+      const res = await request.post('users', formData, config);
 
       dispatch({
         type: REGISTER_SUCCESS,
@@ -75,8 +75,7 @@ const AuthState = props => {
     };
 
     try {
-      const res = await axios.post('/auth', formData, config);
-      console.log(res.data);
+      const res = await request.post('auth', formData, config);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,

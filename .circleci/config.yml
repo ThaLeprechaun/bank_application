@@ -37,7 +37,7 @@ jobs:
       # Run typescript
       - run: yarn tsc
       # run tests!
-      - run: yarn jest
+      # - run: yarn jest
 
   NERT Client:
     docker:

@@ -11,7 +11,6 @@ const Dashboard = () => {
   }, []);
   return (
     <div className="grid-2">
-      {console.log(Users)}
       <Users />
     </div>
   );
