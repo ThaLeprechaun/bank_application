@@ -1,6 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import UserItem from './UserItem';
 import UserContext from '../../context/User/userContext';
 
 const Users = () => {
