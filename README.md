@@ -21,6 +21,14 @@ yarn start
 
 ---
 
-The server part of this system is already designed and exposes a set of REST endpoints via the `/api` route and a GraphQL endpoint.
+**API Endpoints**
 
-The client has been setup to consume graphql if you chose to use that instead.
+| HTTP Verbs | Endpoints                | Action                         |
+| ---------- | ------------------------ | ------------------------------ |
+| GET        | /api/v1/users            | To get all users               |
+| GET        | /api/v1/users/:id        | To get a specific user         |
+| GET        | /api/v1/transactions     | To get all transactions        |
+| POST       | /api/v1/users            | To create a user/account       |
+| POST       | /api/v1/transactions/:id | To transfer funds              |
+| DELETE     | /api/v1/users/:id        | To delete a user/close account |
+| PATCH      | /api/v1/users/:id        | To edit user details           |
