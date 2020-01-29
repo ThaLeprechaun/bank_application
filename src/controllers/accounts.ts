@@ -28,7 +28,7 @@ export async function createAccount(userId: string) {
   const newAccount = {
     user: userId,
     accountNumber: accNumber,
-    accountBalance: 0,
+    accountBalance: 10000,
   };
 
   try {
