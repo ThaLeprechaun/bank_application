@@ -1,14 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react';
-import { useToast, immediateToast } from 'izitoast-react';
+// import { useToast, immediateToast } from 'izitoast-react';
 import instance from '../request';
-import AlertContext from '../context/alert/alertContext';
+// import AlertContext from '../context/alert/alertContext';
 
 const Register = () => {
-  const alertContext = useContext(AlertContext);
+  // const alertContext = useContext(AlertContext);
 
-  const { setAlert } = alertContext;
+  // const { setAlert } = alertContext;
 
   // const showMessage = useToast({
   //   message: 'Registered Successfully',

@@ -43,5 +43,7 @@ export default (state, action) => {
         users: state.users.filter(user => user._id !== action.payload),
         loading: false,
       };
+    default:
+      return state;
   }
 };
